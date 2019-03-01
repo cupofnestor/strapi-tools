@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  api:
+    image: $STRAPI_CONTAINER_ID
+    ports:
+      - 1337:1337
+    volumes:
+      - $STRAPI_DIR:/usr/src/api/$APP_NAME
+      #- /usr/src/api/strapi-app/node_modules
+    environment:
+      - NODE_ENV=staging
+      - DATABASE_HOST=mongo
+      - DATABASE_NAME=strapi-docker
+    depends_on:
+      - mongo
+    restart: always
+    working_dir: /usr/src/api/$APP_NAME
+    command: start
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=strapi
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/data/db
+    restart: always

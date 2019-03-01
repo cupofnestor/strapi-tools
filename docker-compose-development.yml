@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    image: $STRAPI_IMAGE_ID
+    ports:
+      - $EXTERNAL_IP:80:1337
+    volumes:
+      - $STRAPI_PROJECT_DIR:/usr/src/api
+      - $API_DIR:/usr/src/api/api
+      - $UPLOADS_DIR:/usr/src/api/public/uploads
+    # environment:
+    #   - NODE_ENV=staging
+    #   - DATABASE_HOST=mongo
+    #   - DATABASE_NAME=strapi-docker
+    networks:
+      - api
+    restart: always
+    working_dir: /usr/src/api
+    command: start
+
+networks:
+  api:
+    external:
+      name: $API_NETWORK
